@@ -53,13 +53,17 @@ class PingWorker(QThread):
             if sys.platform == "win32":
                 # Windows ping command
                 cmd = ["ping", "-n", "1", "-w", "1000", target]
+                # CREATE_NO_WINDOW prevents a visible CMD window from flashing
+                # open/closed on every ping (0 on non-Windows or older Pythons).
+                creationflags = getattr(subprocess, "CREATE_NO_WINDOW", 0)
                 try:
                     result = subprocess.run(
                         cmd,
                         stdout=subprocess.PIPE,
                         stderr=subprocess.PIPE,
                         timeout=2,
-                        check=True
+                        check=True,
+                        creationflags=creationflags
                     )
                     # Parse the output to get latency
                     output = result.stdout.decode('utf-8')
