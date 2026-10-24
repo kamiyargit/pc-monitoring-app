@@ -6,8 +6,13 @@ A Windows desktop application for monitoring system information and network ping
 
 - Real-time system information display (CPU, RAM, OS, uptime)
 - Network ping monitoring with live charting
+- Per-target ping status panel (current latency and up/down status)
 - Dark theme UI for comfortable viewing
 - Configurable ping targets and update intervals
+- Persistent target list — targets are saved to `targets.json` and restored on startup
+- Application logging to `monitoring_app.log` and the console
+- Ping subprocesses run hidden on Windows (no flashing CMD window)
+- Optional: package as a standalone Windows executable with PyInstaller
 - Multi-platform support (Windows, macOS, Linux)
 
 ## Requirements
@@ -46,11 +51,32 @@ python monitoring_app.py
    - Color-coded lines for different targets
    - Automatic data point management to prevent memory issues
 
+4. **Ping Status Panel**:
+   - Scrollable list showing each target's current ping and status
+   - Updates automatically with the selected interval
+
+5. **Persistence & Logging**:
+   - Target list saved to `targets.json` and reloaded on startup
+   - Application events logged to `monitoring_app.log`
+
+## Building the Executable (Windows)
+
+```
+python create_exe.py
+```
+
+This installs PyInstaller if needed and builds a single-file, windowed
+`PC_Monitoring_App.exe` in the `dist/` folder.
+
 ## Files
 
 - `monitoring_app.py` - Main application window and UI logic
 - `system_info.py` - System information gathering functions
 - `ping_worker.py` - Ping operations in a separate thread
+- `create_exe.py` - PyInstaller build script
+- `monitoring_app.spec` - PyInstaller spec file
+- `test_app.py` / `final_test.py` - Application smoke tests
+- `targets.json` - Persisted ping targets (created at runtime)
 - `requirements.txt` - Required Python packages
 
 ## License
